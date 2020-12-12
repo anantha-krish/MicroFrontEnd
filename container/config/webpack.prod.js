@@ -10,7 +10,9 @@ const prodConfig = {
     mode:'production',
     output :{
         // contenthash resolves caching issue
-      filename: '[name].[contenthash].js'
+      filename: '[name].[contenthash].js',
+      //its required while accessing objects from s3
+      publicPath: '/container/latest/'
     },
     plugins:[
         new ModuleFederationPlugin({
