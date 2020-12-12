@@ -8,7 +8,8 @@ const prodConfig = {
     mode:'production',
     output :{
         // contenthash resolves caching issue
-      filename: '[name].[contenthash].js'
+      filename: '[name].[contenthash].js',
+      publicPath: '/marketing/latest/'
     },
     plugins:[
         new ModuleFederationPlugin({
