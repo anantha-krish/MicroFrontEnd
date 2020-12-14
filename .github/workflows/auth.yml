@@ -1,0 +1,42 @@
+
+name: deploy-auth
+
+on:
+  push:
+    branches:
+    # list down the braches change
+      - master
+    paths:
+    # detect the project/module change
+      - 'auth/**'
+
+defaults:
+  run:
+  # set the pwd to execute the cmd inside the folder
+    working-directory: auth
+
+jobs:
+  build:
+    runs-on: ubuntu-latest #virtual machine OS
+
+    steps:
+     # download dependencies & build
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm run build
+      
+      # steps for uploading dist folder to S3
+      - uses: chrislennon/action-aws-cli@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/auth/latest
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          # added for resolving caching issue in cloud front
+      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/auth/latest/remoteEntry.js"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
