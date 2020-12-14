@@ -9,11 +9,11 @@ const prodConfig = {
     output :{
         // contenthash resolves caching issue
       filename: '[name].[contenthash].js',
-      publicPath: '/Dashboard/latest/'
+      publicPath: '/dashboard/latest/'
     },
     plugins:[
         new ModuleFederationPlugin({
-            name:'Dashboard',
+            name:'dashboard',
             filename:'remoteEntry.js',
             exposes:{
                 './DashboardApp':'./src/bootstrap.js'
