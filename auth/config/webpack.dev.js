@@ -7,11 +7,11 @@ const packageJson = require('../package.json')
 
 const devConfig ={
     mode: 'development',
-    output :{
-      publicPath: 'http://localhost:8081/'
+    output:{
+        publicPath: 'http://localhost:8082/'
     },
     devServer:{
-        port:8081,
+        port:8082,
         //used for navigation
         historyApiFallback:{
             index:'index.html'
@@ -19,10 +19,10 @@ const devConfig ={
     },
     plugins:[
         new ModuleFederationPlugin({
-            name:'marketing',
+            name:'auth',
             filename:'remoteEntry.js',
             exposes:{
-                './MarketingApp':'./src/bootstrap.js'
+                './AuthApp':'./src/bootstrap.js'
             },
             /* Shortcut method to ensure single copy 
             No need to update shared Dependecy list, everytime

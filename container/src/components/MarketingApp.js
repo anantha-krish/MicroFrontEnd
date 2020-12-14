@@ -19,7 +19,9 @@ export default () => {
           history.push(nextPathname);
         }
       },
-    });
+     initialPath: history.location.pathname
+    }
+    );
     //listen to the path changes
     if (onParentNavigate) {
       history.listen(onParentNavigate);
